@@ -227,11 +227,20 @@
 
     .cta-input-row {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: var(--sp-1);
     }
 
+    .name-input-row {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+    }
+
     .name-pill {
+      flex: 1;
+      min-width: 0;
       display: flex;
       align-items: center;
       border-radius: 64px;
@@ -245,6 +254,7 @@
 
     .name-pill input[type="text"] {
       flex: 1;
+      min-width: 0;
       border: none;
       background: transparent;
       color: var(--color-white);
@@ -353,6 +363,8 @@
     }
 
     .btn-join:hover { background: #245a0b; }
+
+    .btn-join-icon { padding: 0; width: 40px; }
 
     .btn-join-outline { border: 1.5px solid rgba(174, 245, 183, 0.4); }
 
@@ -974,14 +986,24 @@
     <div class="cta-card">
       <h2>Join Matey For Free</h2>
       <form id="waitlist-form" novalidate>
-        <div class="cta-input-row">
-          <div class="name-pill">
-            <input type="text" name="name" placeholder="Your first name" required />
-          </div>
+        <!-- Step 1: Email -->
+        <div id="step-email" class="cta-input-row">
           <div class="email-pill">
-            <input type="email" name="email" placeholder="Your email" required />
-            <button type="submit" class="btn-primary btn-join">Join now</button>
+            <input type="email" name="email" placeholder="Your email" />
+            <button type="button" id="email-next" class="btn-primary btn-join btn-join-icon">
+              <svg width="16" height="12" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.55716 2.64457C7.55319 2.56866 7.52604 2.50896 7.49023 2.47139L5.22306 0.0782214C5.11877 -0.0265319 4.96271 -0.0222987 4.86688 0.0683907C4.77105 0.159081 4.76636 0.328741 4.85705 0.424574L6.71872 2.39257H0.251883C0.112755 2.39257 0 2.50533 0 2.64446C0 2.78359 0.11276 2.89634 0.251883 2.89634H6.71872L4.85705 4.86434C4.76636 4.96018 4.77424 5.12664 4.86688 5.22052C4.96271 5.31766 5.13245 5.30653 5.22306 5.21069L7.49023 2.81753C7.55006 2.75639 7.55325 2.70438 7.55716 2.64434V2.64457Z" fill="#E6F8E9"/></svg>
+            </button>
           </div>
+        </div>
+        <!-- Step 2: Name (hidden until email submitted) -->
+        <div id="step-name" class="name-input-row" style="display:none">
+          <div class="name-pill">
+            <input type="text" name="first_name" placeholder="First name" />
+          </div>
+          <div class="name-pill">
+            <input type="text" name="last_name" placeholder="Last name" />
+          </div>
+          <button type="submit" id="join-btn" class="btn-primary btn-join">Join</button>
         </div>
         <p class="cta-message" aria-live="polite"></p>
       </form>
@@ -1123,7 +1145,7 @@
 ══════════════════════════════════════ -->
 <section class="video-diy">
   <div class="video-row">
-    <h2>See what's being built <img class="video-icon" src="../Assets/SVGs/icons/play.svg" alt="" /></h2>
+    <h2>See what's being built <img class="video-icon" src="../Assets/SVGs/icons/Icon-play.svg" alt="" /></h2>
 
     <p>Start your own project<img class="video-icon" src="../Assets/SVGs/icons/icon-start.svg" alt="" /></p>
   </div>
@@ -1164,29 +1186,57 @@
   const form = document.getElementById('waitlist-form');
   if (!form) return;
 
-  const msg = form.querySelector('.cta-message');
-  const btn = form.querySelector('button[type="submit"]');
+  const stepEmail = document.getElementById('step-email');
+  const stepName  = document.getElementById('step-name');
+  const emailNext = document.getElementById('email-next');
+  const joinBtn   = document.getElementById('join-btn');
+  const msg       = form.querySelector('.cta-message');
 
+  let savedEmail = '';
+
+  function advanceToStep2() {
+    const email = form.querySelector('input[name="email"]').value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.className   = 'cta-message error';
+      msg.textContent = 'Please enter a valid email.';
+      return;
+    }
+    savedEmail              = email;
+    msg.className           = 'cta-message';
+    msg.textContent         = '';
+    stepEmail.style.display = 'none';
+    stepName.style.display  = 'flex';
+    form.querySelector('input[name="first_name"]').focus();
+  }
+
+  // Step 1: arrow button click
+  emailNext.addEventListener('click', advanceToStep2);
+
+  // Step 1: Enter key in email field
+  form.querySelector('input[name="email"]').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); advanceToStep2(); }
+  });
+
+  // Step 2: Join button / Enter in name fields
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const name  = form.querySelector('input[name="name"]').value.trim();
-    const email = form.querySelector('input[name="email"]').value.trim();
+    const firstName = form.querySelector('input[name="first_name"]').value.trim();
+    const lastName  = form.querySelector('input[name="last_name"]').value.trim();
 
-    if (!name || !email) {
-      msg.className = 'cta-message error';
-      msg.textContent = 'Please fill in both fields.';
+    if (!firstName || !lastName) {
+      msg.className   = 'cta-message error';
+      msg.textContent = 'Please enter your first and last name.';
       return;
     }
 
-    btn.disabled    = true;
-    btn.textContent = 'Joining…';
-    msg.className   = 'cta-message';
-    msg.textContent = '';
+    joinBtn.disabled      = true;
+    joinBtn.style.opacity = '0.5';
+    msg.className         = 'cta-message';
+    msg.textContent       = '';
 
     try {
       // 1. Gender inference from first name
-      const firstName = name.split(' ')[0];
       let gender = null;
       try {
         const gRes  = await fetch(`https://api.genderize.io?name=${encodeURIComponent(firstName)}`);
@@ -1203,16 +1253,16 @@
           'Authorization': `Bearer ${SUPABASE_ANON}`,
           'Prefer':        'return=minimal'
         },
-        body: JSON.stringify({ name, email, gender })
+        body: JSON.stringify({ email: savedEmail, name: `${firstName} ${lastName}`, gender })
       });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         if (err.code === '23505') {
-          msg.className   = 'cta-message error';
-          msg.textContent = 'That email is already on the list!';
-          btn.disabled    = false;
-          btn.textContent = 'Join now';
+          msg.className         = 'cta-message error';
+          msg.textContent       = 'That email is already on the list!';
+          joinBtn.disabled      = false;
+          joinBtn.style.opacity = '';
           return;
         }
         throw new Error('insert_failed');
@@ -1233,14 +1283,14 @@
       // 4. Show success
       form.innerHTML = `
         <p class="cta-success-text">You're on the list, ${firstName}!</p>
-        <p class="cta-count-text">#${count} in line — we'll be in touch.</p>
+        <p class="cta-count-text">We'll be in touch.</p>
       `;
 
     } catch {
-      msg.className   = 'cta-message error';
-      msg.textContent = 'Something went wrong. Please try again.';
-      btn.disabled    = false;
-      btn.textContent = 'Join now';
+      msg.className         = 'cta-message error';
+      msg.textContent       = 'Something went wrong. Please try again.';
+      joinBtn.disabled      = false;
+      joinBtn.style.opacity = '';
     }
   });
 })();

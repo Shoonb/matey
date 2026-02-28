@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp:*)",
+      "Bash(open:*)",
+      "Bash(gh auth:*)",
+      "Bash(git:*2)"
+    ]
+  }
+}

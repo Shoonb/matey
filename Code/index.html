@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matey – DIY made easy.</title>
+
+  <!--
+    PRODUCTION FONTS (licensed — purchase at https://abcdinamo.com/typefaces/ginto):
+      ABC Ginto Nord Condensed  →  hero/display headlines
+      ABC Ginto Normal          →  footer / UI labels
+
+    DEVELOPMENT SUBSTITUTES loaded below (Google Fonts):
+      Barlow Condensed  →  ABC Ginto Nord Condensed
+      Barlow            →  ABC Ginto Normal
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400&family=Nunito:wght@200;300;400;600;900&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* ── Colors (confirmed from Figma) ── */
+      --color-bg:           #f9f9f9;
+      --color-green-light:  #e6f8e9;
+      --color-green-card:   #d3f7d8;
+      --color-green-accent: #aef5b7;
+      --color-green-dark:   #2d690d;
+      --color-black:        #1e2e29;
+      --color-text:         #252423;
+      --color-white:        #ffffff;
+
+      /* ── Fonts ── */
+      --font-display: 'ABC Ginto Nord Condensed', 'Barlow Condensed', sans-serif;
+      --font-ui:      'ABC Ginto Normal', 'Barlow', sans-serif;
+      --font-body:    'Nunito', sans-serif;
+      --font-btn:     'Roboto', sans-serif;
+
+      /* ── Spacing (8px base unit) ── */
+      --sp-1:  4px;
+      --sp-2:  8px;
+      --sp-3:  10px;
+      --sp-4:  16px;
+      --sp-5:  20px;
+      --sp-6:  24px;
+      --sp-7:  48px;
+      --sp-8:  64px;
+      --sp-9: 128px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+    }
+
+    .page-wrapper {
+      overflow-x: hidden;
+    }
+
+    /* ════════════════════════════════════════
+       NAV
+       Height 134px · padding 8px 36px
+    ════════════════════════════════════════ */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 134px;
+      padding: 8px 36px;
+      background: var(--color-green-light);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    .nav-logo .tagline {
+      font-family: var(--font-body);
+      font-size: 32px;
+      font-weight: 600;
+      color: #2d690d;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: var(--sp-2);
+    }
+
+    .nav-actions a {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--color-green-dark);
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: 0.5px solid var(--color-green-dark);
+      background: transparent;
+      transition: background 0.15s;
+    }
+
+    .nav-actions a:first-child {
+      background: var(--color-green-accent);
+      border: none;
+    }
+
+    .nav-actions a:hover { background: rgba(174, 245, 183, 0.4); }
+
+    .nav-actions a:first-child:hover { background: #9aeea4; }
+
+    /* ════════════════════════════════════════
+       HERO / VISION  (810px full-bleed)
+    ════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      height: 810px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Fallback bg for when SVG is absent */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #1e3a10 0%, #0a1405 100%);
+      z-index: 0;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.15);
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 20px 60px;
+      text-align: center;
+    }
+
+    /* Four-line headline */
+    .hero-headline {
+      display: flex;
+      flex-direction: column;
+      margin-top: -20px;
+    }
+
+    .hero-headline span {
+      font-family: var(--font-body);
+      font-weight: 900;
+      font-size: 58px;
+      line-height: 68px;
+      letter-spacing: 0;
+      color: #d3f7d8;
+      text-shadow: 0 2.3px 2.3px rgba(0, 0, 0, 0.25);
+      display: block;
+      text-align: center;
+    }
+
+    /* Glassmorphism "We're here" CTA card */
+    .cta-card {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 8.9px;
+      padding: 24px 62px;
+      border-radius: 8.9px;
+      background: rgba(45, 105, 13, 0.20);
+      border: 1px solid rgba(211, 247, 216, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.35),
+        inset 0 -1px 6px rgba(0, 0, 0, 0.12),
+        0 14px 36px rgba(0, 0, 0, 0.12);
+      margin-top: auto;
+      transform: translateY(-70px);
+    }
+
+    .cta-card h2 {
+      font-family: var(--font-body);
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 44px;
+      color: var(--color-white);
+      text-align: center;
+      margin-bottom: var(--sp-1);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .cta-input-row {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .email-pill {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      border-radius: 64px;
+      border: 1.5px solid rgba(174, 245, 183, 0.4);
+      background: rgba(174, 245, 183, 0.2);
+      padding: 0 0 0 18px;
+      transition: border-color 0.15s;
+    }
+
+    .email-pill:focus-within { border-color: rgba(255, 255, 255, 0.6); }
+
+    .email-pill input[type="email"] {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      color: var(--color-white);
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      outline: none;
+      padding: 8px 0;
+    }
+
+    .email-pill input[type="email"]::placeholder { color: rgba(255, 255, 255, 0.55); }
+
+    /* ── Shared primary button ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--color-green-dark);
+      background: var(--color-black);
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 64px;
+      border: 1.5px solid var(--color-green-dark);
+      box-shadow: 0 0 0 2px var(--color-green-accent);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: #0d1a08; }
+
+    .btn-join {
+      background: #2d690d;
+      color: #e6f8e9;
+      border: none;
+      box-shadow: none;
+      border-radius: 64px;
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .btn-join:hover { background: #245a0b; }
+
+    .btn-join-outline { border: 1.5px solid rgba(174, 245, 183, 0.4); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      color: var(--color-green-dark);
+      background: #e6f8e9;
+      border: none;
+      border-radius: 64px;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: background 0.15s;
+    }
+
+    .btn-ghost:hover { background: rgba(174, 245, 183, 0.4); }
+
+    .btn-scroll-down {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-scroll-down:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .btn-scroll-down img { width: 20px; height: 20px; }
+
+    /* ════════════════════════════════════════
+       INTRO BAND
+    ════════════════════════════════════════ */
+    .intro-band {
+      background: var(--color-green-accent);
+      padding: var(--sp-7) var(--sp-6);
+      text-align: center;
+    }
+
+    .intro-band p {
+      font-family: var(--font-body);
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--color-black);
+      line-height: 1.65;
+    }
+
+    .intro-band strong { font-weight: 900; }
+
+    /* ════════════════════════════════════════
+       FEATURES / DIY MADE EASY
+    ════════════════════════════════════════ */
+    .features {
+      background: var(--color-green-light);
+      padding: var(--sp-7) 36px;
+    }
+
+    .feat-cards {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      max-width: 716px;
+      margin: 0 auto var(--sp-8);
+    }
+
+    .feat-card {
+      width: 96px;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+      gap: 0;
+    }
+
+    .feat-thumb {
+      width: 100%;
+      height: 124px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--color-white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feat-cards .feat-card:nth-child(n+3) .feat-thumb {
+      background: #aef5b7;
+      box-shadow: none;
+    }
+
+    .feat-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .feat-icon {
+      width: 28px;
+      height: 28px;
+      margin-top: -14px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feat-icon img { width: 20px; height: 20px; }
+
+    .feat-label {
+      font-family: var(--font-btn);
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--color-text);
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .feat-bottom {
+      text-align: center;
+      max-width: 716px;
+      margin: 0 auto;
+    }
+
+    .feat-bottom h2 {
+      font-family: var(--font-body);
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--color-black);
+      line-height: 1.65;
+      margin-bottom: var(--sp-2);
+    }
+
+    .feat-bottom p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-black);
+      line-height: 1.65;
+      margin-bottom: var(--sp-6);
+    }
+
+    .feat-btns {
+      display: flex;
+      gap: var(--sp-1);
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ════════════════════════════════════════
+       ABOUT / MISSION
+    ════════════════════════════════════════ */
+    .about {
+      background: var(--color-green-card);
+      padding: var(--sp-8) 36px;
+    }
+
+    .about-inner {
+      max-width: 716px;
+      margin: 0 auto;
+    }
+
+    .about-header {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      margin-bottom: var(--sp-6);
+    }
+
+    .about-header .btn-ai-diy {
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .about-badge {
+      width: 86px;
+      height: 86px;
+      border-radius: 8px;
+      background: var(--color-white);
+      border: 0.5px solid var(--color-black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      gap: 2px;
+    }
+
+    .about-badge .ai  {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-green-dark);
+      letter-spacing: 1.5px;
+    }
+
+    .about-badge .diy {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-black);
+    }
+
+    .about-heading h3 {
+      font-family: var(--font-body);
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--color-black);
+      line-height: 1;
+    }
+
+    .about-heading p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 300;
+      color: #2d690d;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .about-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 80px;
+      padding: 24px 0;
+      border-bottom: 0.5px solid var(--color-black);
+    }
+
+    .about-row:last-child { border-bottom: none; }
+
+    .about-meta {
+      width: 86px;
+      flex-shrink: 0;
+      padding-left: 16px;
+    }
+
+    .about-meta .n {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(30, 46, 41, 0.5);
+      margin-bottom: 1px;
+    }
+
+    .about-meta .lbl {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 300;
+      color: #1e2e29;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      white-space: nowrap;
+    }
+
+    .about-val {
+      font-family: var(--font-body);
+      font-size: 28px;
+      font-weight: 200;
+      color: #252423;
+      line-height: 1;
+    }
+
+    /* ════════════════════════════════════════
+       VIDEO DIY
+    ════════════════════════════════════════ */
+    .video-diy {
+      background: var(--color-green-light);
+      padding: var(--sp-7) 36px;
+    }
+
+    .video-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      column-gap: var(--sp-5);
+      max-width: 716px;
+      margin: 0 auto;
+    }
+
+    .video-row h2 {
+      grid-column: 1; grid-row: 1; align-self: center;
+      font-family: var(--font-body);
+      font-size: clamp(28px, 3.3vw, 40px);
+      font-weight: 400;
+      color: var(--color-text);
+      line-height: 1;
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .video-row p  {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: 12px;
+      font-family: var(--font-body);
+      font-size: 28px;
+      font-weight: 200;
+      color: var(--color-text);
+    }
+    .video-row .btn-outline-pill { grid-column: 2; grid-row: 1; align-self: center; }
+
+    .btn-ai-diy {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width: 86px;
+      height: 86px;
+      background: #e6f8e9;
+      border-radius: 8px;
+      border: none;
+      padding: 0 0 0 16px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .btn-ai-diy__ai {
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--color-green-dark);
+      line-height: 1;
+    }
+
+    .btn-ai-diy__diy {
+      font-family: 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--color-black);
+      line-height: 1;
+    }
+
+    .video-left .cat {
+      display: inline-block;
+      font-family: var(--font-btn);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--color-green-dark);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      background: #e6f8e9;
+      border: 0;
+      outline: none;
+      box-shadow: none;
+      border-radius: 64px;
+      padding: 4px 10px;
+      margin-bottom: var(--sp-2);
+    }
+
+    .video-left h2 {
+      font-family: var(--font-body);
+      font-size: clamp(28px, 3.3vw, 48px);
+      font-weight: 400;
+      color: var(--color-text);
+      line-height: 1.37;
+      margin-bottom: var(--sp-2);
+    }
+
+    .video-left p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-text);
+      opacity: 0.65;
+    }
+
+    .video-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-4);
+      flex-shrink: 0;
+    }
+
+    .btn-outline-pill {
+      display: inline-flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 20px;
+      border: none;
+      border-radius: 64px;
+      background: #aef5b7;
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      color: #2d690d;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-outline-pill:hover { background: rgba(30, 46, 41, 0.06); }
+
+    .explore-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-family: var(--font-btn);
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--color-green-dark);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+    }
+
+    .explore-link:hover { opacity: 1; }
+
+    .explore-icon img { width: 12px; height: auto; }
+
+    .video-icon { height: 28px; width: auto; vertical-align: middle; margin-left: 16px; }
+
+    .explore-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 22px;
+      border-radius: 16px;
+      border: none;
+      background: #d3f7d8;
+      color: #1e2e29;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    /* ════════════════════════════════════════
+       MOVEMENT  (dark full-bleed)
+    ════════════════════════════════════════ */
+    .movement {
+      position: relative;
+      min-height: 630px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .movement::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #0d1a08, #1e2e29);
+      z-index: 0;
+    }
+
+    .movement-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      z-index: 1;
+    }
+
+    .movement-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 2;
+    }
+
+    .movement-body {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .movement-body h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 58px);
+      color: var(--color-green-accent);
+      text-transform: uppercase;
+      line-height: 1.12;
+      letter-spacing: 0;
+      margin-bottom: var(--sp-7);
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .movement-btns {
+      display: flex;
+      gap: var(--sp-2);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-glass {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      padding: 0 20px;
+      border-radius: 64px;
+      border: 1px solid rgba(211, 247, 216, 0.25);
+      background: rgba(45, 105, 13, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-family: var(--font-btn);
+      font-size: 15px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      color: #e6f8e9;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-glass:hover { background: rgba(174, 245, 183, 0.3); }
+
+    .movement-footer {
+      position: absolute;
+      z-index: 3;
+      right: 36px;
+      bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .movement-footer a {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-white);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .movement-footer a:hover { opacity: 0.7; }
+
+    .movement-footer .copy {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-white);
+    }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer {
+      position: relative;
+      min-height: 320px;
+      display: block;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .footer-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .footer-links {
+      position: absolute;
+      z-index: 1;
+      right: 36px;
+      bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      line-height: normal;
+    }
+
+    .footer-links a {
+      font-family: var(--font-ui);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--color-white);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+    }
+
+    .footer-links a:hover { opacity: 1; }
+
+    .footer-links .copy {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--color-white);
+      opacity: 0.45;
+    }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav { min-height: 80px; padding: 8px 20px; }
+      .hero { height: auto; min-height: 560px; }
+      .hero-headline span { font-size: 32px; line-height: 1.2; }
+      .hero-headline .hl-1 { margin-bottom: -8px; }
+      .about { padding: var(--sp-8) 20px; }
+      .video-diy { padding: var(--sp-7) 20px; }
+      .video-row { flex-direction: column; }
+      .video-right { align-items: flex-start; }
+      footer { padding: var(--sp-6) 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo">
+    <img src="../Assets/SVGs/logo/Matey-logo.svg" alt="Matey" />
+    <span class="tagline">DIY made easy.</span>
+  </div>
+  <div class="nav-actions">
+    <a href="#">Join / Sign in</a>
+    <a href="#">About us</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO / VISION
+══════════════════════════════════════ -->
+<section class="hero">
+  <img class="hero-bg"
+       src="../Assets/SVGs/images/imgs (hero + footer)/vision-img.svg"
+       alt="" />
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-headline">
+      <span>Our vision</span>
+      <span>is to get you</span>
+      <span>all the way</span>
+      <span>to your</span>
+      <span>victory dance.</span>
+    </div>
+    <div class="cta-card">
+      <h2>Join Matey For Free</h2>
+      <div class="cta-input-row">
+        <div class="email-pill">
+          <input type="email" placeholder="Your email" />
+          <button class="btn-primary btn-join">Join now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     INTRO BAND
+══════════════════════════════════════ -->
+<div class="intro-band">
+  <p>Matey is the first to create an AI-driven<br>platform to guide <strong>your</strong> DIY adventures.</p>
+</div>
+
+<!-- ══════════════════════════════════════
+     FEATURES / DIY MADE EASY
+══════════════════════════════════════ -->
+<section class="features">
+  <div class="feat-cards">
+
+    <div class="feat-card">
+      <div class="feat-thumb">
+        <img src="../Assets/SVGs/cards/scan.svg" alt="Scan your space" />
+      </div>
+      <div class="feat-icon">
+        <img src="../Assets/SVGs/icons/Icon-scan.svg" alt="" />
+      </div>
+      <div class="feat-label">Scan</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-thumb">
+        <img src="../Assets/SVGs/cards/inspiration.svg" alt="Inspiration" />
+      </div>
+      <div class="feat-icon">
+        <img src="../Assets/SVGs/icons/icon-arrow_right.svg" alt="" />
+      </div>
+      <div class="feat-label">Inspiration</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-thumb">
+        <img src="../Assets/SVGs/cards/plan.svg" alt="Plan" />
+      </div>
+      <div class="feat-icon">
+        <img src="../Assets/SVGs/icons/Icon-list.svg" alt="" />
+      </div>
+      <div class="feat-label">Plan</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-thumb">
+        <img src="../Assets/SVGs/cards/shop.svg" alt="Shop" />
+      </div>
+      <div class="feat-icon">
+        <img src="../Assets/SVGs/icons/Icon-shop.svg" alt="" />
+      </div>
+      <div class="feat-label">Shop</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-thumb">
+        <img src="../Assets/SVGs/cards/how-to.svg" alt="How-to-build" />
+      </div>
+      <div class="feat-icon">
+        <img src="../Assets/SVGs/icons/Icon-play.svg" alt="" />
+      </div>
+      <div class="feat-label">How-to-build</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-thumb">
+        <img src="../Assets/SVGs/cards/community.svg" alt="Community" />
+      </div>
+      <div class="feat-icon">
+        <img src="../Assets/SVGs/icons/Icon-Community.svg" alt="" />
+      </div>
+      <div class="feat-label">Community</div>
+    </div>
+
+  </div>
+
+  <div class="feat-bottom">
+    <h2>DIY made easy.</h2>
+    <p>Create your DIY projects, faster — from shopping list, to how-to-build video.<br>
+       Personalized visual instruction with advanced AI features.</p>
+    <div class="feat-btns">
+      <button class="btn-ghost">Explore</button>
+      <button class="btn-primary btn-join">Start for free</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ABOUT / MISSION
+══════════════════════════════════════ -->
+<section class="about">
+  <div class="about-inner">
+
+    <div class="about-header">
+      <div class="btn-ai-diy">
+        <span class="btn-ai-diy__ai">AI</span>
+        <span class="btn-ai-diy__diy">DIY</span>
+      </div>
+      <div class="about-heading">
+        <h3>At Matey</h3>
+        <p>We make DIY easy</p>
+      </div>
+    </div>
+
+    <div class="about-row">
+      <div class="about-meta">
+        <span class="n">0.1</span>
+        <span class="lbl">Mission</span>
+      </div>
+      <div class="about-val">Smarter, more personalized AI tools</div>
+    </div>
+
+    <div class="about-row">
+      <div class="about-meta">
+        <span class="n">0.2</span>
+        <span class="lbl">Vision</span>
+      </div>
+      <div class="about-val">Simplify just-in-time learning.</div>
+    </div>
+
+    <div class="about-row">
+      <div class="about-meta">
+        <span class="n">0.3</span>
+        <span class="lbl">Ambition</span>
+      </div>
+      <div class="about-val">Lead the future of visual learning.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     VIDEO DIY
+══════════════════════════════════════ -->
+<section class="video-diy">
+  <div class="video-row">
+    <h2>See what's being built <img class="video-icon" src="../Assets/SVGs/icons/play.svg" alt="" /></h2>
+
+    <p>Start your own project<img class="video-icon" src="../Assets/SVGs/icons/icon-start.svg" alt="" /></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MOVEMENT
+══════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     MOVEMENT / FOOTER
+══════════════════════════════════════ -->
+<footer class="movement">
+  <img class="movement-bg"
+       src="../Assets/SVGs/images/imgs (hero + footer)/footer-img.svg"
+       alt="" />
+  <div class="movement-overlay"></div>
+  <div class="movement-body">
+    <h2>DIY ISN'T JUST A HOBBY<br>IT'S A MOVEMENT</h2>
+    <div class="movement-btns">
+      <button class="btn-glass">Contact us</button>
+      <button class="btn-primary btn-join btn-join-outline">Join for free</button>
+    </div>
+  </div>
+  <div class="movement-footer">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of use</a>
+    <div class="copy">©2025 All rights reserved.</div>
+  </div>
+</footer>
+
+</div><!-- /.page-wrapper -->
+</body>
+</html>

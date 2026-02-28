@@ -1004,7 +1004,7 @@
       <span>victory dance.</span>
     </div>
     <div class="cta-card">
-      <h2>Join Matey For Free</h2>
+      <h2 id="cta-heading">Join Matey For Free</h2>
       <form id="waitlist-form" novalidate>
         <!-- Step 1: Email -->
         <div id="step-email" class="cta-input-row">
@@ -1329,10 +1329,8 @@
       const count = await countRes.json();
 
       // 4. Show success
-      form.innerHTML = `
-        <p class="cta-success-text">You're on the list, ${firstName}!</p>
-        <p class="cta-count-text">We'll be in touch.</p>
-      `;
+      document.getElementById('cta-heading').textContent = `Thanks for Joining Matey, ${firstName}`;
+      form.innerHTML = `<p class="cta-count-text">We'll be in touch.</p>`;
 
     } catch {
       msg.className         = 'cta-message error';

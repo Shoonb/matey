@@ -91,7 +91,7 @@
       font-family: var(--font-body);
       font-size: 32px;
       font-weight: 600;
-      color: #2d690d;
+      color: var(--color-green-dark);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -111,7 +111,7 @@
       color: var(--color-green-dark);
       height: 40px;
       padding: 0 14px;
-      border-radius: 8px;
+      border-radius: 64px;
       border: 0.5px solid var(--color-green-dark);
       background: transparent;
       transition: background 0.15s;
@@ -198,9 +198,9 @@
     .cta-card {
       display: inline-flex;
       flex-direction: column;
-      gap: 8.9px;
+      gap: 8px;
       padding: 24px 62px;
-      border-radius: 8.9px;
+      border-radius: 8px;
       background: rgba(45, 105, 13, 0.20);
       border: 1px solid rgba(211, 247, 216, 0.12);
       backdrop-filter: blur(14px);
@@ -371,8 +371,8 @@
     .btn-primary:hover { background: #0d1a08; }
 
     .btn-join {
-      background: #2d690d;
-      color: #e6f8e9;
+      background: var(--color-green-dark);
+      color: var(--color-green-light);
       border: none;
       box-shadow: none;
       border-radius: 64px;
@@ -397,7 +397,7 @@
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       color: var(--color-green-dark);
-      background: #e6f8e9;
+      background: var(--color-green-light);
       border: none;
       border-radius: 64px;
       cursor: pointer;
@@ -484,7 +484,7 @@
     }
 
     .feat-cards .feat-card:nth-child(n+3) .feat-thumb {
-      background: #aef5b7;
+      background: var(--color-green-accent);
       box-shadow: none;
     }
 
@@ -587,7 +587,7 @@
       font-family: var(--font-body);
       font-size: 16px;
       font-weight: 300;
-      color: #2d690d;
+      color: var(--color-green-dark);
       line-height: 1;
       margin-top: 1px;
     }
@@ -621,7 +621,7 @@
       font-family: var(--font-body);
       font-size: 12px;
       font-weight: 300;
-      color: #1e2e29;
+      color: var(--color-black);
       text-transform: uppercase;
       letter-spacing: 0.9px;
       white-space: nowrap;
@@ -682,7 +682,7 @@
       align-items: flex-start;
       width: 86px;
       height: 86px;
-      background: #e6f8e9;
+      background: var(--color-green-light);
       border-radius: 8px;
       border: none;
       padding: 0 0 0 16px;
@@ -713,11 +713,11 @@
       padding: 0 20px;
       border: none;
       border-radius: 64px;
-      background: #aef5b7;
+      background: var(--color-green-accent);
       font-family: var(--font-btn);
       font-size: 15px;
       font-weight: 400;
-      color: #2d690d;
+      color: var(--color-green-dark);
       cursor: pointer;
       transition: background 0.15s;
     }
@@ -804,7 +804,7 @@
       font-size: 15px;
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
-      color: #e6f8e9;
+      color: var(--color-green-light);
       cursor: pointer;
       white-space: nowrap;
       transition: background 0.15s;

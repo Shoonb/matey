@@ -268,6 +268,26 @@
 
     .name-pill input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.55); }
 
+    .step-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(174, 245, 183, 0.25);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+    }
+
+    .step-dot.active { background: rgba(174, 245, 183, 0.9); }
+
     .cta-message {
       font-family: var(--font-body);
       font-size: 13px;
@@ -1006,6 +1026,10 @@
           <button type="submit" id="join-btn" class="btn-primary btn-join">Join</button>
         </div>
         <p class="cta-message" aria-live="polite"></p>
+        <div class="step-dots" id="step-dots" style="display:none">
+          <button type="button" class="step-dot active" id="dot-1" aria-label="Email step"></button>
+          <button type="button" class="step-dot" id="dot-2" aria-label="Name step"></button>
+        </div>
       </form>
     </div>
   </div>
@@ -1190,9 +1214,27 @@
   const stepName  = document.getElementById('step-name');
   const emailNext = document.getElementById('email-next');
   const joinBtn   = document.getElementById('join-btn');
+  const dots      = document.getElementById('step-dots');
+  const dot1      = document.getElementById('dot-1');
+  const dot2      = document.getElementById('dot-2');
   const msg       = form.querySelector('.cta-message');
 
   let savedEmail = '';
+
+  function setActiveDot(n) {
+    dot1.classList.toggle('active', n === 1);
+    dot2.classList.toggle('active', n === 2);
+  }
+
+  function goToStep1() {
+    stepName.style.display  = 'none';
+    stepEmail.style.display = 'flex';
+    dots.style.display      = 'flex';
+    msg.className   = 'cta-message';
+    msg.textContent = '';
+    setActiveDot(1);
+    form.querySelector('input[name="email"]').focus();
+  }
 
   function advanceToStep2() {
     const email = form.querySelector('input[name="email"]').value.trim();
@@ -1206,6 +1248,8 @@
     msg.textContent         = '';
     stepEmail.style.display = 'none';
     stepName.style.display  = 'flex';
+    dots.style.display      = 'flex';
+    setActiveDot(2);
     form.querySelector('input[name="first_name"]').focus();
   }
 
@@ -1216,6 +1260,10 @@
   form.querySelector('input[name="email"]').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') { e.preventDefault(); advanceToStep2(); }
   });
+
+  // Dot navigation
+  dot1.addEventListener('click', goToStep1);
+  dot2.addEventListener('click', advanceToStep2);
 
   // Step 2: Join button / Enter in name fields
   form.addEventListener('submit', async function (e) {

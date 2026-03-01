@@ -534,7 +534,7 @@
 
     .feat-bottom p {
       font-family: var(--font-body);
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 400;
       color: var(--color-black);
       line-height: 1.65;
@@ -572,7 +572,6 @@
 
     .about-header .btn-ai-diy {
       justify-content: center;
-      gap: 3px;
     }
 
     .about-heading h3 {
@@ -669,7 +668,7 @@
       grid-row: 2;
       margin-top: 12px;
       font-family: var(--font-body);
-      font-size: 28px;
+      font-size: 20px;
       font-weight: 300;
       color: var(--color-text);
     }
@@ -679,15 +678,21 @@
       display: inline-flex;
       flex-direction: column;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       width: 86px;
       height: 86px;
       background: var(--color-green-light);
       border-radius: 8px;
       border: none;
-      padding: 0 0 0 16px;
-      gap: 2px;
+      padding: 0;
       flex-shrink: 0;
+    }
+
+    .btn-ai-diy__text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
     }
 
     .btn-ai-diy__ai {
@@ -773,7 +778,7 @@
     .movement-body h2 {
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: clamp(28px, 4vw, 58px);
+      font-size: clamp(28px, 4vw, 80px);
       color: var(--color-green-accent);
       text-transform: uppercase;
       line-height: 1.12;
@@ -898,6 +903,8 @@
 
       /* VIDEO DIY */
       .video-diy { padding: var(--sp-7) 24px; }
+      .feat-bottom p { font-size: 18px; }
+      .video-row p { font-size: 18px; }
 
       /* FOOTER */
       .movement-footer { right: 24px; }
@@ -940,13 +947,13 @@
       .feat-thumb { height: auto; aspect-ratio: 3 / 4; }
       .feat-label { font-size: 12px; }
       .feat-bottom h2 { font-size: 28px; }
-      .feat-bottom p { font-size: 22px; }
+      .feat-bottom p { font-size: 16px; }
       .feat-btns { flex-direction: column; align-items: center; }
       .mobile-break { display: inline; }
 
       /* ABOUT */
       .about { padding: var(--sp-7) 20px; }
-      .about-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .about-header { gap: 20px; align-items: center; }
       .about-heading h3 { font-size: 20px; }
       .about-row { gap: 16px; flex-direction: column; align-items: flex-start; padding: 16px 0; }
       .about-meta { width: auto; padding-left: 16px; }
@@ -959,7 +966,7 @@
         grid-template-rows: auto auto;
       }
       .video-row h2 { grid-column: 1; grid-row: 1; font-size: 28px; padding-left: 16px; }
-      .video-row p  { grid-column: 1; grid-row: 2; font-size: 22px; padding-left: 16px; }
+      .video-row p  { grid-column: 1; grid-row: 2; font-size: 16px; padding-left: 16px; }
 
       /* FOOTER */
       .movement { min-height: 400px; }
@@ -1128,8 +1135,10 @@
 
     <div class="about-header">
       <div class="btn-ai-diy">
-        <span class="btn-ai-diy__ai">AI</span>
-        <span class="btn-ai-diy__diy">DIY</span>
+        <span class="btn-ai-diy__text">
+          <span class="btn-ai-diy__ai">AI</span>
+          <span class="btn-ai-diy__diy">DIY</span>
+        </span>
       </div>
       <div class="about-heading">
         <h3>At Matey</h3>
